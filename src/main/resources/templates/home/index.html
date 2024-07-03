@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+  <title th:text="${title} ?: 'Home'">Home</title>
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    /* Styles for table rows */
+     tr td {
+        display: flex;
+        flex-direction: column;
+<!--        max-width: 33.33%;-->
+        text-align: center;
+    }
+     /* Styles for table rows */
+    tbody {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    tr {
+        flex-basis: calc(33.33% - 10px);
+        margin-bottom: 100px;
+    }
+<!-- td img {-->
+<!--        max-width: auto;-->
+<!--        max-height: auto;-->
+<!--        margin: 0 auto;-->
+<!--    }-->
+     td img {
+        width: 100%;
+        height: 100%;
+<!--        margin: 0 auto;-->
+    }
+       h2 {
+        text-align: center;
+        font-size: 3.0rem;
+    }
+  .table{
+     font-size: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+<section layout:fragment="content">
+  <h2>Danh Sách Cơm</h2>
+  <input type="text" id="searchInput" placeholder="Search by name">
+  <button onclick="searchProducts()">Tìm</button>
+
+
+
+  <table class="table table-bordered table-hover">
+    <tbody>
+    <tr th:each="product : ${products}">
+      <td>
+        <img th:src="@{${product.thumnail}}" alt="Product Image">
+      </td>
+      <td th:text="${product.name}"></td>
+      <td th:text="${product.price}"></td>
+      <td th:text="${product.description}"></td>
+<!--      <td th:text="${product.category.name}"></td>-->
+      <td th:text="${product.category.name}"></td>
+       <td>
+        <form th:action="@{/cart/add}" method="post">
+          <input type="number" name="quantity" min="1" value="1" class="form-control d-inline-block" style="width: 70px;">
+          <input type="hidden" th:value="${product.id}" name="productId"/>
+          <button type="submit" class="btn btn-warning btn-sm">Thêm Vào Giỏ Hàng</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</section>
+</body>
+</html>
+
+<script>
+  function searchProducts() {
+      var searchInput = document.getElementById("searchInput");
+      var searchTerm = searchInput.value.toLowerCase();
+      var productRows = document.getElementsByTagName("tr");
+
+      for (var i = 1; i < productRows.length; i++) {
+          var nameCell = productRows[i].getElementsByTagName("td")[1];
+          var productName = nameCell.textContent.toLowerCase();
+
+          if (productName.includes(searchTerm)) {
+              productRows[i].style.display = "";
+          } else {
+              productRows[i].style.display = "none";
+          }
+      }
+  }
+</script>
+<script>
+      function searchProductsByCategory() {
+      var searchInput = document.getElementById("searchCategory");
+      var searchTerm = searchInput.value.toLowerCase();
+      var productRows = document.getElementsByTagName("tr");
+
+      for (var i = 0; i < productRows.length; i++) {
+        var nameCell = productRows[i].getElementsByTagName("td")[4];
+        var categoryName = nameCell.textContent.toLowerCase();
+
+        if (searchTerm === "" || categoryName.includes(searchTerm)) {
+          productRows[i].style.display = "";
+        } else {
+          productRows[i].style.display = "none";
+        }
+      }
+    }
+</script>
+<script>
+  // Loại bỏ các tùy chọn trùng lặp
+  var select = document.getElementById("searchCategory");
+  var options = Array.from(select.options);
+
+  var uniqueOptions = options.filter(function(option, index, self) {
+    return index === self.findIndex(function(o) {
+      return o.value === option.value;
+    });
+  });
+
+  select.innerHTML = "";
+  uniqueOptions.forEach(function(option) {
+    select.appendChild(option);
+  });
+</script>

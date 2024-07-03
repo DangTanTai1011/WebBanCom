@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layoutAdmin}">
+<head>
+    <title th:text="${title} ?: 'Order'">Order</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        h1 {
+      text-align: center;
+      font-size: 3.0rem;
+  }
+  .table{
+     font-size: 1.3rem;
+    }
+    </style>
+</head>
+    <title th:text="${title} ?: 'Order'">Danh Sách Đặt Hàng</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<section layout:fragment="content">
+    <h1>Danh Sách Đặt Hàng</h1>
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+        <tr>
+            <th>Order ID</th>
+            <th>Họ Và Tên</th>
+            <th>Địa Chỉ Giao Hàng</th>
+            <th>Email</th>
+            <th>SĐT</th>
+            <th>Ghi Chú</th>
+            <th>Tên Món Ăn</th> <!-- Thêm cột mới cho ID sản phẩm -->
+            <th>Số Lượng</th> <!-- Thêm cột mới cho số lượng -->
+            <th>Hành Động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Iterate over the orders -->
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.id}"></td>
+            <td th:text="${order.customerName}"></td>
+            <td th:text="${order.address}"></td>
+            <td th:text="${order.email}"></td>
+            <td th:text="${order.sdt}"></td>
+            <td th:text="${order.note}"></td>
+            <td>
+                <!-- Iterate over the order details -->
+                <ul>
+                    <li th:each="detail : ${order.orderDetails}">
+                        <span th:text="${detail.product.name}"></span> <!-- Hiển thị ID sản phẩm -->
+                    </li>
+                </ul>
+            </td>
+            <td>
+                <!-- Iterate over the order details -->
+                <ul>
+                    <li th:each="detail : ${order.orderDetails}">
+                        <span th:text="${detail.quantity}"></span> <!-- Hiển thị số lượng -->
+                    </li>
+                </ul>
+            </td>
+            <td>
+                <form th:action="@{/order/delete/{orderId}(orderId=${order.id})}" method="post">
+                    <input type="hidden" name="_method" value="post">
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Xóa</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+</body>
+</html>
