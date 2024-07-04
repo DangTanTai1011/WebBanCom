@@ -18,20 +18,20 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@PreAuthorize("hasAuthority('ADMIN')")
+//@PreAuthorize("hasAuthority('ADMIN')")
 public class CategoryController {
     @Autowired
     private final CategoryService categoryService;
 
     @GetMapping("/categories/add")
-    @PreAuthorize("hasAuthority('ADMIN')")
+   // @PreAuthorize("hasAuthority('ADMIN')")
     public String showAddForm(Model model) {
         model.addAttribute("category", new Category());
         return "/categories/add-category";
     }
 
     @PostMapping("/categories/add")
-    @PreAuthorize("hasAuthority('ADMIN')")
+   // @PreAuthorize("hasAuthority('ADMIN')")
     public String addCategory(@Valid Category category, BindingResult result) {
         if (result.hasErrors()) {
             return "/categories/add-category";
@@ -42,7 +42,7 @@ public class CategoryController {
 
     // GET request to show category edit form
     @GetMapping("/categories/edit/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+  //  @PreAuthorize("hasAuthority('ADMIN')")
     public String showUpdateForm(@PathVariable("id") Long id, Model model) {
         Category category = categoryService.getCategoryById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid category Id:"
@@ -52,7 +52,7 @@ public class CategoryController {
     }
     // POST request to update category
     @PostMapping("/categories/update/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+  //  @PreAuthorize("hasAuthority('ADMIN')")
     public String updateCategory(@PathVariable("id") Long id, @Valid Category category,
                                  BindingResult result, Model model) {
         if (result.hasErrors()) {
@@ -65,7 +65,7 @@ public class CategoryController {
     }
     // GET request for deleting category
     @GetMapping("/categories/delete/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+ //   @PreAuthorize("hasAuthority('ADMIN')")
     public String deleteCategory(@PathVariable("id") Long id, Model model) {
         Category category = categoryService.getCategoryById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid category Id:"
