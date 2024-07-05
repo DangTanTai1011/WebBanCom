@@ -26,7 +26,7 @@ public class CategoryController {
     @GetMapping("/categories/add")
    // @PreAuthorize("hasAuthority('ADMIN')")
     public String showAddForm(Model model) {
-        model.addAttribute("category", new Category());
+        model.addAttribute("category", new Category()); //thêm giá trị mới
         return "/categories/add-category";
     }
 
@@ -36,7 +36,7 @@ public class CategoryController {
         if (result.hasErrors()) {
             return "/categories/add-category";
         }
-        categoryService.addCategory(category);
+        categoryService.addCategory(category); // thêm category mới vào csdl
         return "redirect:/categories";
     }
 
@@ -47,7 +47,7 @@ public class CategoryController {
         Category category = categoryService.getCategoryById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid category Id:"
                         + id));
-        model.addAttribute("category", category);
+        model.addAttribute("category", category); //lấy giá trị từ category
         return "/categories/update-category";
     }
     // POST request to update category

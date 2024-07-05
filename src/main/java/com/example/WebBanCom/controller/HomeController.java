@@ -19,7 +19,7 @@ public class HomeController {
         List<Product> products = productRepository.findAll(); // Truy vấn dữ liệu Product từ repository hoặc service
         model.addAttribute("products", products); // Truyền dữ liệu vào model
 
-        model.addAttribute("message", "KIỂM TRA GIỮA KÌ, LÝ THUYẾT JAVA!");
+      //  model.addAttribute("message", "KIỂM TRA CUỐI KÌ, LÝ THUYẾT JAVA!");
         return "home/index";
     }
 }
