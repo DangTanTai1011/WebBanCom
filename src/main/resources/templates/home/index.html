@@ -81,7 +81,7 @@
       var searchTerm = searchInput.value.toLowerCase();
       var productRows = document.getElementsByTagName("tr");
 
-      for (var i = 1; i < productRows.length; i++) {
+      for (var i = 0; i < productRows.length; i++) {
           var nameCell = productRows[i].getElementsByTagName("td")[1];
           var productName = nameCell.textContent.toLowerCase();
 
